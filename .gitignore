@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Chaos Lock specific
+.chaos_vault/
+*.encrypted
+.locked_*
+.decrypt_checkpoint.json
+.encrypt_checkpoint.json
+.level1_folder_lock_config.json
+
+# Test files
+test_*/
+temp_*/
