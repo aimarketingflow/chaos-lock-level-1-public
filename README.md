@@ -6,7 +6,7 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyQt6](https://img.shields.io/badge/GUI-PyQt6-green.svg)](https://www.riverbankcomputing.com/software/pyqt/)
 
-🔗 **[Official Website](https://aimarketingflow.com/chaos-lock/)** | 🎥 **[Watch Demo Video](YOUTUBE_URL_HERE)** | 📚 **[Full Documentation](docs/)**
+🔗 **[Official Website](https://aimarketingflow.com/chaos-lock/)** | 🎥 **[Watch Demo Video](https://www.youtube.com/watch?v=GCxGdX1ROZI)** | 📚 **[Full Documentation](docs/)**
 
 ---
 
@@ -584,7 +584,7 @@ python3 level1_easy_wizard.py
 
 ### Official Resources
 - 🌐 **[Official Website](https://aimarketingflow.com/chaos-lock/)** - Project homepage and updates
-- 🎥 **[Demo Video](YOUTUBE_URL_HERE)** - Watch Chaos Lock in action
+- 🎥 **[Demo Video](https://www.youtube.com/watch?v=GCxGdX1ROZI)** - Watch Chaos Lock in action
 - 💻 **[GitHub Repository](https://github.com/aimarketingflow/chaos-lock-level-1-public)** - Source code and releases
 
 ### Documentation
@@ -611,6 +611,6 @@ python3 level1_easy_wizard.py
 
 ⭐ Star this repo if you find it useful!
 
-[Official Website](https://aimarketingflow.com/chaos-lock/) · [Watch Demo](YOUTUBE_URL_HERE) · [Documentation](docs/) · [Report Bug](https://github.com/aimarketingflow/chaos-lock-level-1-public/issues)
+[Official Website](https://aimarketingflow.com/chaos-lock/) · [Watch Demo](https://www.youtube.com/watch?v=GCxGdX1ROZI) · [Documentation](docs/) · [Report Bug](https://github.com/aimarketingflow/chaos-lock-level-1-public/issues)
 
 </div>
