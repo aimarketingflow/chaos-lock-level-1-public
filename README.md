@@ -6,6 +6,8 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyQt6](https://img.shields.io/badge/GUI-PyQt6-green.svg)](https://www.riverbankcomputing.com/software/pyqt/)
 
+🔗 **[Official Website](https://aimarketingflow.com/chaos-lock/)** | 🎥 **[Watch Demo Video](YOUTUBE_URL_HERE)** | 📚 **[Full Documentation](docs/)**
+
 ---
 
 ## 🎯 What is Chaos Lock?
@@ -578,12 +580,37 @@ python3 level1_easy_wizard.py
 
 ---
 
+## 🔗 Links & Resources
+
+### Official Resources
+- 🌐 **[Official Website](https://aimarketingflow.com/chaos-lock/)** - Project homepage and updates
+- 🎥 **[Demo Video](YOUTUBE_URL_HERE)** - Watch Chaos Lock in action
+- 💻 **[GitHub Repository](https://github.com/aimarketingflow/chaos-lock-level-1-public)** - Source code and releases
+
+### Documentation
+- 📦 **[Installation Guide](docs/INSTALLATION_GUIDE.md)** - Complete setup instructions
+- ⚡ **[Quick Tutorial](docs/TUTORIAL.md)** - Get started in 5 minutes
+- 🔒 **[Security FAQ](docs/SECURITY_FAQ.md)** - Security questions answered
+- 🛠️ **[Hardware Guide](docs/HARDWARE.md)** - USB drives and NFC recommendations
+
+### Community & Support
+- 🐛 **[Report Issues](https://github.com/aimarketingflow/chaos-lock-level-1-public/issues)** - Bug reports and feature requests
+- 💬 **[Discussions](https://github.com/aimarketingflow/chaos-lock-level-1-public/discussions)** - Ask questions and share ideas
+- 🔐 **[Security Policy](SECURITY.md)** - Responsible disclosure
+
+### Follow AI Marketing Flow
+- 🌐 **Website:** [aimarketingflow.com](https://www.aimarketingflow.com)
+- 💼 **LinkedIn:** [AI Marketing Flow](https://www.linkedin.com/company/aimarketingflow)
+- 💻 **GitHub:** [@aimarketingflow](https://github.com/aimarketingflow)
+
+---
+
 <div align="center">
 
 **Made with ❤️ for privacy and security**
 
 ⭐ Star this repo if you find it useful!
 
-[Report Bug](https://github.com/aimarketingflow/chaos-lock-level-1-public/issues) · [Request Feature](https://github.com/aimarketingflow/chaos-lock-level-1-public/issues) · [Documentation](docs/)
+[Official Website](https://aimarketingflow.com/chaos-lock/) · [Watch Demo](YOUTUBE_URL_HERE) · [Documentation](docs/) · [Report Bug](https://github.com/aimarketingflow/chaos-lock-level-1-public/issues)
 
 </div>
