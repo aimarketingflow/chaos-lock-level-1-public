@@ -596,11 +596,12 @@ python3 level1_easy_wizard.py
 ### Community & Support
 - 🐛 **[Report Issues](https://github.com/aimarketingflow/chaos-lock-level-1-public/issues)** - Bug reports and feature requests
 - 💬 **[Discussions](https://github.com/aimarketingflow/chaos-lock-level-1-public/discussions)** - Ask questions and share ideas
+- 📧 **Email:** [support@aimarketingflow.com](mailto:support@aimarketingflow.com)
 - 🔐 **[Security Policy](SECURITY.md)** - Responsible disclosure
 
-### Follow AI Marketing Flow
+### Follow the Creator
 - 🌐 **Website:** [aimarketingflow.com](https://www.aimarketingflow.com)
-- 💼 **LinkedIn:** [AI Marketing Flow](https://www.linkedin.com/company/aimarketingflow)
+- 💼 **LinkedIn:** [Hana Omori](https://www.linkedin.com/in/hanaomori/)
 - 💻 **GitHub:** [@aimarketingflow](https://github.com/aimarketingflow)
 
 ---
