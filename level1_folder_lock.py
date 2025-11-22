@@ -471,15 +471,14 @@ class Level1FolderLock(QMainWindow):
     
     def refresh_registry(self):
         """Refresh the folder registry display"""
-        usb_path = self.registry_usb_dropdown.currentData()
-        if not usb_path:
-            usb_path = self.registry_usb_dropdown.currentText()
-        
-        if not usb_path or usb_path.startswith("--"):
-            self.registry_display.setText("⚠️  Please select USB vault from dropdown and click Refresh")
-            return
-        
         try:
+            usb_path = self.registry_usb_dropdown.currentData()
+            if not usb_path:
+                usb_path = self.registry_usb_dropdown.currentText()
+            
+            if not usb_path or usb_path.startswith("--"):
+                self.registry_display.setText("⚠️  Please select USB vault from dropdown and click Refresh")
+                return
             vault_path = Path(usb_path)
             vault_dir = vault_path / '.chaos_vault'
             registry_file = vault_dir / 'level1_locked_folders.json'
@@ -503,16 +502,23 @@ class Level1FolderLock(QMainWindow):
             html += f'<div>📁 Vault: {usb_path}</div><br>'
             
             if not registry_file.exists():
-                html += '<div>📭 No folders in Level 1 registry</div>'
+                html += '<div>📭 Registry is empty - no folders locked yet</div>'
                 self.registry_display.setHtml(html)
                 return
             
             import json
-            with open(registry_file, 'r') as f:
-                locked_folders = json.load(f)
+            try:
+                with open(registry_file, 'r', encoding='utf-8') as f:
+                    locked_folders = json.load(f)
+            except (json.JSONDecodeError, UnicodeDecodeError) as e:
+                html += f'<div style="color: #ff6600;">⚠️  Registry file is corrupted or empty</div>'
+                html += f'<div style="color: #00d4ff; font-size: 12px;">Error: {str(e)}</div>'
+                html += '<div style="color: #00d4ff; font-size: 12px;">Tip: Lock a folder to create a new registry</div>'
+                self.registry_display.setHtml(html)
+                return
             
             if not locked_folders:
-                html += '<div>📭 No folders in Level 1 registry</div>'
+                html += '<div>📭 Registry is empty - no folders locked yet</div>'
                 self.registry_display.setHtml(html)
                 return
             
@@ -553,7 +559,15 @@ class Level1FolderLock(QMainWindow):
             self.registry_display.setHtml(html)
             
         except Exception as e:
-            self.registry_display.setText(f"❌ Error loading registry:\n{str(e)}")
+            error_html = """
+            <style>
+                body { background-color: #0a0e27; color: #ff6600; font-family: monospace; }
+            </style>
+            <div style="color: #ff6600; font-size: 16px; font-weight: bold;">❌ Error loading registry</div>
+            <div style="color: #00d4ff; font-size: 12px; margin-top: 10px;">""" + str(e) + """</div>
+            <div style="color: #00ff88; font-size: 12px; margin-top: 10px;">💡 Tip: Try locking a folder to create a new registry</div>
+            """
+            self.registry_display.setHtml(error_html)
     
     def init_ui(self):
         """Initialize the user interface"""
