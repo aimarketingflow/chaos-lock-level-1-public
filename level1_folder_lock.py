@@ -81,10 +81,39 @@ class LockWorker(QThread):
             self.log.emit("🌪️ Encrypting and locking folder...")
             self.progress.emit(50)
             
+            def lock_progress(count, total, size, total_size, name, eta):
+                """Enhanced progress callback with ETA and size info"""
+                # Calculate percentages
+                file_pct = int((count / total * 100)) if total > 0 else 0
+                size_mb = size / (1024 * 1024)
+                total_mb = total_size / (1024 * 1024)
+                # Cap size percentage at 100% (can exceed due to encryption overhead)
+                size_pct = min(100, int((size / total_size * 100))) if total_size > 0 else 0
+                
+                # Update progress bar (50-95% range for file processing)
+                progress_val = 50 + int((count / total) * 45) if total > 0 else 50
+                self.progress.emit(progress_val)
+                
+                # Format ETA
+                if eta and eta > 0:
+                    if eta < 60:
+                        eta_str = f"{int(eta)}s"
+                    elif eta < 3600:
+                        eta_str = f"{int(eta/60)}m {int(eta%60)}s"
+                    else:
+                        eta_str = f"{int(eta/3600)}h {int((eta%3600)/60)}m"
+                else:
+                    eta_str = "calculating..."
+                
+                # Emit detailed progress
+                self.log.emit(f"   📦 {count}/{total} files ({file_pct}%) | {size_mb:.1f}/{total_mb:.1f} MB ({size_pct}%) | ETA: {eta_str}")
+                if name:
+                    self.log.emit(f"   🔒 Encrypting: {name}")
+            
             success = manager.lock_folder(
                 Path(self.folder_path),
                 crypto,
-                progress_callback=lambda count, total, size, total_size, name, eta: self.log.emit(f"   Progress: {count}/{total} files")
+                progress_callback=lock_progress
             )
             
             if success:
@@ -161,10 +190,40 @@ class UnlockWorker(QThread):
             
             # Unlock the folder
             self.log.emit("🌪️ Decrypting and unlocking folder...")
+            
+            def unlock_progress(count, total, size, total_size, name, eta):
+                """Enhanced progress callback with ETA and size info"""
+                # Calculate percentages
+                file_pct = int((count / total * 100)) if total > 0 else 0
+                size_mb = size / (1024 * 1024)
+                total_mb = total_size / (1024 * 1024)
+                # Cap size percentage at 100% (can exceed due to encryption overhead)
+                size_pct = min(100, int((size / total_size * 100))) if total_size > 0 else 0
+                
+                # Update progress bar (50-95% range for file processing)
+                progress_val = 50 + int((count / total) * 45) if total > 0 else 50
+                self.progress.emit(progress_val)
+                
+                # Format ETA
+                if eta and eta > 0:
+                    if eta < 60:
+                        eta_str = f"{int(eta)}s"
+                    elif eta < 3600:
+                        eta_str = f"{int(eta/60)}m {int(eta%60)}s"
+                    else:
+                        eta_str = f"{int(eta/3600)}h {int((eta%3600)/60)}m"
+                else:
+                    eta_str = "calculating..."
+                
+                # Emit detailed progress
+                self.log.emit(f"   📦 {count}/{total} files ({file_pct}%) | {size_mb:.1f}/{total_mb:.1f} MB ({size_pct}%) | ETA: {eta_str}")
+                if name:
+                    self.log.emit(f"   🔓 Decrypting: {name}")
+            
             success = manager.unlock_folder(
                 self.folder_id, 
                 crypto,
-                progress_callback=lambda count, total, size, total_size, name, eta: self.log.emit(f"   Progress: {count}/{total} files - {name}")
+                progress_callback=unlock_progress
             )
             
             if success:

@@ -411,7 +411,7 @@ class FolderLockManager:
             # Keep checkpoint file for recovery
             return (encrypted_count, 0, 0, 0)
     
-    def decrypt_file_contents(self, folder_path: Path, crypto: EnhancedCrypto, progress_callback=None, expected_files=None, expected_size=None) -> int:
+    def decrypt_file_contents(self, folder_path: Path, crypto: EnhancedCrypto, progress_callback=None, expected_files=None, expected_size=None, show_skip_summary=True) -> int:
         """Decrypt all files (including batches) inside the folder recursively with progress tracking and crash recovery"""
         import time
         
@@ -438,10 +438,32 @@ class FolderLockManager:
                 total_size = expected_size
                 print(f"   📊 Using stored metadata: {total_files} files, {total_size / (1024**3):.2f} GB")
             else:
-                # Fallback: estimate as we go
-                total_files = 1000  # Rough estimate
-                total_size = 1024 * 1024 * 100  # 100MB estimate
-                print(f"   📊 Starting decryption (using estimates for progress)...")
+                # Scan folder to count files and calculate total size
+                print(f"   🔍 Scanning folder to count files...")
+                if progress_callback:
+                    progress_callback(0, 1, 0, 1, "Scanning folder...", 0)
+                
+                total_files = 0
+                total_size = 0
+                
+                # Count batch files
+                for item in folder_path.rglob('.batch_encrypted'):
+                    total_files += 1
+                    total_size += item.stat().st_size
+                
+                # Count individual encrypted files
+                for item in folder_path.rglob('*'):
+                    if item.is_file() and item.suffix == '.encrypted' and item.stat().st_size >= 100:
+                        total_files += 1
+                        total_size += item.stat().st_size
+                
+                if total_files == 0:
+                    total_files = 1  # Avoid division by zero
+                    total_size = 1
+                
+                print(f"   📊 Found {total_files} files to decrypt ({total_size / (1024**2):.1f} MB total)")
+                if progress_callback:
+                    progress_callback(0, total_files, 0, total_size, f"Ready to decrypt {total_files} files", 0)
             
             # Collect batch files (usually small list)
             batch_files = []
@@ -478,6 +500,10 @@ class FolderLockManager:
                         file_path.parent.mkdir(parents=True, exist_ok=True)
                         file_path.write_bytes(file_data)
                         decrypted_count += 1
+                        
+                        # Mark each extracted file as processed so we don't try to decrypt it again
+                        extracted_file_key = f"file:{file_path}"
+                        processed_files.add(extracted_file_key)
                     
                     # Clear files_data from memory
                     del files_data
@@ -510,15 +536,22 @@ class FolderLockManager:
                     # Report progress (batch files)
                     if progress_callback:
                         try:
-                            # Use estimated totals to avoid memory issues
-                            estimated_total = max(decrypted_count + 100, 1000)
+                            # Calculate ETA
+                            elapsed = time.time() - start_time
+                            if decrypted_count > 0 and elapsed > 0:
+                                files_per_sec = decrypted_count / elapsed
+                                remaining_files = total_files - decrypted_count
+                                eta = remaining_files / files_per_sec if files_per_sec > 0 else 0
+                            else:
+                                eta = 0
+                            
                             progress_callback(
                                 decrypted_count,
-                                estimated_total,
+                                total_files,  # Use actual total from metadata
                                 total_bytes_processed,
-                                max(total_bytes_processed + 1024*1024, 1024*1024*100),
+                                total_size,  # Use actual total size from metadata
                                 item.name,
-                                0  # ETA unknown
+                                eta
                             )
                         except Exception:
                             pass  # Ignore callback errors
@@ -538,11 +571,20 @@ class FolderLockManager:
             
             # Now process individual files using generator
             for item in folder_path.rglob('*'):
-                if not item.is_file() or item.name.startswith('.') or item.name == '.decrypt_checkpoint.json':
+                if not item.is_file():
+                    continue
+                
+                # Skip checkpoint file specifically
+                if item.name == '.decrypt_checkpoint.json':
+                    continue
+                
+                # Skip hidden files that start with . (silently)
+                if item.name.startswith('.'):
                     continue
                     
                 file_key = f"file:{item}"
                 if file_key in processed_files:
+                    # File was already processed (likely from a batch)
                     continue
                     
                 try:
@@ -572,15 +614,17 @@ class FolderLockManager:
                         
                         decrypted_count += 1
                         total_bytes_processed += encrypted_size
-                        print(f"   🔓 Decrypted: {item.name} ({encrypted_size}→{decrypted_size} bytes)")
                         
                         # Report progress immediately after each file
                         if progress_callback:
                             try:
                                 elapsed = time.time() - start_time
-                                files_per_sec = decrypted_count / elapsed if elapsed > 0 else 1
-                                remaining_files = max(total_files - decrypted_count, 0)
-                                eta = remaining_files / files_per_sec if files_per_sec > 0 else 0
+                                if decrypted_count > 0 and elapsed > 0:
+                                    files_per_sec = decrypted_count / elapsed
+                                    remaining_files = max(total_files - decrypted_count, 0)
+                                    eta = remaining_files / files_per_sec if files_per_sec > 0 else 0
+                                else:
+                                    eta = 0
                                 
                                 progress_callback(
                                     decrypted_count,
@@ -590,11 +634,11 @@ class FolderLockManager:
                                     item.name,
                                     eta
                                 )
-                            except Exception:
-                                pass  # Ignore callback errors
+                            except Exception as e:
+                                print(f"   ⚠️  Progress callback error: {e}")
                     except Exception as decrypt_err:
-                        # File might not be encrypted, skip it
-                        print(f"   ⚠️  Skipping {item.name} (not encrypted or already decrypted)")
+                        # File might not be encrypted, skip it (already decrypted from batch)
+                        # Don't print - this is normal for files extracted from batches
                         total_bytes_processed += encrypted_size
                         del encrypted_data
                     
@@ -626,15 +670,22 @@ class FolderLockManager:
                     # Report progress (individual files)
                     if progress_callback:
                         try:
-                            # Use estimated totals to avoid memory issues
-                            estimated_total = max(decrypted_count + 100, 1000)
+                            # Calculate ETA
+                            elapsed = time.time() - start_time
+                            if decrypted_count > 0 and elapsed > 0:
+                                files_per_sec = decrypted_count / elapsed
+                                remaining_files = total_files - decrypted_count
+                                eta = remaining_files / files_per_sec if files_per_sec > 0 else 0
+                            else:
+                                eta = 0
+                            
                             progress_callback(
                                 decrypted_count,
-                                estimated_total,
+                                total_files,  # Use actual total from metadata
                                 total_bytes_processed,
-                                max(total_bytes_processed + 1024*1024, 1024*1024*100),
+                                total_size,  # Use actual total size from metadata
                                 item.name,
-                                0  # ETA unknown
+                                eta
                             )
                         except Exception:
                             pass  # Ignore callback errors
@@ -642,13 +693,28 @@ class FolderLockManager:
                 except Exception as e:
                     print(f"   ⚠️  Could not decrypt {item.name}: {e}")
             
-            # Clean up checkpoint file on successful completion
+            # Clean up checkpoint file
             if checkpoint_file.exists():
                 try:
                     checkpoint_file.unlink()
-                    print(f"   🧹 Checkpoint file removed (decryption complete)")
                 except Exception:
                     pass
+            
+            # Send final completion progress update
+            if progress_callback:
+                try:
+                    progress_callback(
+                        total_files,  # Report as complete
+                        total_files,
+                        total_size,
+                        total_size,
+                        "Decryption complete",
+                        0
+                    )
+                except Exception:
+                    pass
+            
+            print(f"   ✅ Decryption complete!")
             
             return decrypted_count
         except Exception as e:
