@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos Lock - Setup Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0D1117 0%, #161B22 100%);
+            color: #E6EDF3;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00FF87, #00D4AA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #8B949E;
+        }
+        
+        .section {
+            margin-bottom: 80px;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #00FF87;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        h2 .step-number {
+            background: #00FF87;
+            color: #0D1117;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+            color: #E6EDF3;
+        }
+        
+        p {
+            color: #8B949E;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .screenshot {
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid #30363D;
+        }
+        
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .screenshot-caption {
+            background: #161B22;
+            padding: 15px 20px;
+            color: #8B949E;
+            font-size: 0.95rem;
+            border-top: 1px solid #30363D;
+        }
+        
+        .tip {
+            background: rgba(0, 255, 135, 0.1);
+            border-left: 4px solid #00FF87;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .tip-title {
+            color: #00FF87;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #FFC107;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-title {
+            color: #FFC107;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            color: #E6EDF3;
+        }
+        
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00FF87;
+            font-weight: bold;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #30363D, transparent);
+            margin: 60px 0;
+        }
+        
+        .toc {
+            background: #161B22;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 60px;
+            border: 1px solid #30363D;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+            color: #00FF87;
+        }
+        
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        
+        .toc-list a {
+            color: #58A6FF;
+            text-decoration: none;
+            padding: 8px 0;
+            display: block;
+            transition: color 0.2s;
+        }
+        
+        .toc-list a:hover {
+            color: #00FF87;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #8B949E;
+            border-top: 1px solid #30363D;
+            margin-top: 60px;
+        }
+        
+        footer a {
+            color: #00FF87;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 Chaos Lock Setup Guide</h1>
+            <p class="subtitle">Secure your files with chaos-based encryption in minutes</p>
+        </header>
+        
+        <nav class="toc">
+            <h3>📋 Table of Contents</h3>
+            <ul class="toc-list">
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#step1">Step 1: Choose Security Level</a></li>
+                <li><a href="#step2">Step 2: Select USB Drive</a></li>
+                <li><a href="#step3">Step 3: Initialize Vault</a></li>
+                <li><a href="#step4">Step 4: Set Your Passkey</a></li>
+                <li><a href="#step5">Step 5: Chaos Capture</a></li>
+                <li><a href="#step6">Step 6: Setup Complete</a></li>
+                <li><a href="#folder-lock">Using the Folder Lock Tool</a></li>
+            </ul>
+        </nav>
+        
+        <!-- Getting Started -->
+        <section class="section" id="getting-started">
+            <h2>🚀 Getting Started</h2>
+            <p>Welcome to Chaos Lock! This guide will walk you through setting up your first encrypted vault. The entire process takes about 2 minutes.</p>
+            
+            <h3>What You'll Need</h3>
+            <ul class="feature-list">
+                <li>A USB flash drive (any size, at least 1GB recommended)</li>
+                <li>Optional: NFC card/tag for passkey entry</li>
+                <li>30 seconds of your time for entropy capture</li>
+            </ul>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/chaos-lock-level-picker.png" alt="Chaos Lock Dashboard">
+                <div class="screenshot-caption">The Chaos Lock dashboard - your starting point for encryption</div>
+            </div>
+            
+            <p>From the dashboard, click on <strong>Level 1: Easy Mode</strong> to begin the setup wizard.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-picker.png" alt="Level 1 Selection">
+                <div class="screenshot-caption">Select "Start Easy Setup" to begin the wizard</div>
+            </div>
+        </section>
+        
+        <div class="divider"></div>
+        
+        <!-- Step 1 -->
+        <section class="section" id="step1">
+            <h2><span class="step-number">1</span> Choose Security Level</h2>
+            <p>The wizard starts by confirming your security level. Easy Mode (Level 1) provides strong AES-256 encryption with a simple setup process.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-wizard-step-1.png" alt="Step 1: Security Level">
+                <div class="screenshot-caption">Step 1: Confirm your security level - Easy Mode with 4-star protection</div>
+            </div>
+            
+            <h3>What Easy Mode Includes</h3>
+            <ul class="feature-list">
+                <li>USB Vault Drive for portable security</li>
+                <li>Optional NFC tag support for passkey</li>
+                <li>30-second setup time</li>
+                <li>Strong encryption (100,000 iterations)</li>
+                <li>AES-256-GCM military-grade encryption</li>
+            </ul>
+            
+            <p>Click <strong>Next</strong> to proceed to USB selection.</p>
+        </section>
+        
+        <div class="divider"></div>
+        
+        <!-- Step 2 -->
+        <section class="section" id="step2">
+            <h2><span class="step-number">2</span> Select USB Drive</h2>
+            <p>Insert your USB drive and select it from the list. This drive will store your encrypted vault and chaos alphabet.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-wizard-step-2.png" alt="Step 2: USB Selection">
+                <div class="screenshot-caption">Step 2: Select your USB drive from the detected drives</div>
+            </div>
+            
+            <div class="tip">
+                <div class="tip-title">💡 Pro Tip</div>
+                <p>Use a dedicated USB drive for your vault. This keeps your encryption keys physically separate from your computer for maximum security.</p>
+            </div>
+            
+            <div class="warning">
+                <div class="warning-title">⚠️ Existing Vault Detected?</div>
+                <p>If you see a warning about an existing vault, you can choose to <strong>Use Existing</strong> to continue with your current vault, or <strong>Delete & Recreate</strong> to start fresh.</p>
+            </div>
+        </section>
+        
+        <div class="divider"></div>
+        
+        <!-- Step 3 -->
+        <section class="section" id="step3">
+            <h2><span class="step-number">3</span> Initialize Vault</h2>
+            <p>Click the <strong>Initialize Vault</strong> button to create your encrypted vault structure on the USB drive.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-wizard-step-3.png" alt="Step 3: Initialize Vault">
+                <div class="screenshot-caption">Step 3: Initialize your vault - watch the progress in the log window</div>
+            </div>
+            
+            <p>The initialization process creates:</p>
+            <ul class="feature-list">
+                <li>A hidden <code>.chaos_vault</code> folder on your USB</li>
+                <li>Vault configuration file</li>
+                <li>Secure storage structure for your chaos alphabet</li>
+            </ul>
+        </section>
+        
+        <div class="divider"></div>
+        
+        <!-- Step 4 -->
+        <section class="section" id="step4">
+            <h2><span class="step-number">4</span> Set Your Passkey</h2>
+            <p>Enter a passkey to secure your vault. This can be typed manually or scanned from an NFC card.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-wizard-step-4.png" alt="Step 4: Passkey">
+                <div class="screenshot-caption">Step 4: Enter your passkey - type it or scan an NFC card</div>
+            </div>
+            
+            <div class="tip">
+                <div class="tip-title">💡 NFC Card Tip</div>
+                <p>Most NFC readers work as keyboard input - just place your cursor in the passkey field and scan your card! The card's ID will be entered automatically.</p>
+            </div>
+            
+            <h3>Passkey Best Practices</h3>
+            <ul class="feature-list">
+                <li>Use 8+ characters for strong security</li>
+                <li>Mix letters, numbers, and symbols</li>
+                <li>Or use an NFC card for convenience</li>
+                <li>Remember: you'll need this to unlock your vault!</li>
+            </ul>
+        </section>
+        
+        <div class="divider"></div>
+        
+        <!-- Step 5 -->
+        <section class="section" id="step5">
+            <h2><span class="step-number">5</span> Chaos Capture</h2>
+            <p>This is where the magic happens! Chaos Lock captures 30 seconds of environmental entropy to generate your unique 64-character "Nightmare Alphabet".</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-wizard-step-5.png" alt="Step 5: Chaos Capture">
+                <div class="screenshot-caption">Step 5: Chaos Capture - generating your unique encryption keys</div>
+            </div>
+            
+            <p>During capture, the app collects randomness from:</p>
+            <ul class="feature-list">
+                <li>System timing variations</li>
+                <li>Memory state fluctuations</li>
+                <li>CPU metrics</li>
+                <li>Environmental noise</li>
+            </ul>
+            
+            <div class="tip">
+                <div class="tip-title">💡 Why Chaos?</div>
+                <p>Traditional encryption uses predictable algorithms. Chaos Lock adds real-world randomness that's mathematically impossible to reproduce, making your encryption truly unique.</p>
+            </div>
+        </section>
+        
+        <div class="divider"></div>
+        
+        <!-- Step 6 -->
+        <section class="section" id="step6">
+            <h2><span class="step-number">6</span> Setup Complete!</h2>
+            <p>Congratulations! Your vault is ready. You can now encrypt and decrypt files using your USB drive.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-wizard-step-6.png" alt="Step 6: Complete">
+                <div class="screenshot-caption">Step 6: Setup complete - your vault is ready to use!</div>
+            </div>
+            
+            <h3>What's Been Created</h3>
+            <ul class="feature-list">
+                <li>Nightmare alphabet stored on USB (hidden)</li>
+                <li>Your passkey is required to unlock the vault</li>
+                <li>Encryption report saved to USB</li>
+            </ul>
+            
+            <p>Click <strong>Close Wizard</strong> to return to the dashboard and start encrypting files!</p>
+        </section>
+        
+        <div class="divider"></div>
+        
+        <!-- Folder Lock Tool -->
+        <section class="section" id="folder-lock">
+            <h2>📁 Using the Folder Lock Tool</h2>
+            <p>Now that your vault is set up, you can use the Folder Lock tool to encrypt and decrypt folders.</p>
+            
+            <h3>Authentication</h3>
+            <p>First, authenticate with your USB vault by inserting your USB drive and entering your passkey.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-vault-authentication.png" alt="Vault Authentication">
+                <div class="screenshot-caption">Authenticate with your USB vault to access encryption features</div>
+            </div>
+            
+            <h3>Locking Folders</h3>
+            <p>Select a folder and click <strong>Lock</strong> to encrypt it with your chaos alphabet.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-vault-lock.png" alt="Lock Folder">
+                <div class="screenshot-caption">Lock folders with military-grade AES-256 encryption</div>
+            </div>
+            
+            <h3>Unlocking Folders</h3>
+            <p>To access your encrypted files, select the folder and click <strong>Unlock</strong>.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-vault-unlock.png" alt="Unlock Folder">
+                <div class="screenshot-caption">Unlock your protected folders when you need access</div>
+            </div>
+            
+            <h3>File Registry</h3>
+            <p>The registry shows all your encrypted files and their status.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-vault-registry.png" alt="File Registry">
+                <div class="screenshot-caption">Track all your encrypted files in one place</div>
+            </div>
+            
+            <h3>Settings</h3>
+            <p>Customize your encryption preferences in the settings panel.</p>
+            
+            <div class="screenshot">
+                <img src="full-screen-app-screenshots/level-1-vault-settings.png" alt="Settings">
+                <div class="screenshot-caption">Configure your security preferences</div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>Chaos Lock © 2025 <a href="https://aimarketingflow.com">AI Marketing Flow</a></p>
+            <p style="margin-top: 10px;">Need help? <a href="https://aimarketingflow.com/chaos-lock/">Visit our support page</a></p>
+        </footer>
+    </div>
+</body>
+</html>
